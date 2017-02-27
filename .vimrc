@@ -82,10 +82,13 @@ let g:syntastic_vhdl_checkers = ['ghdl']
 
 :set rnu
 
-let mapleader=","
+let mapleader="\<Space>"
 nnoremap <leader>c :!ctags -R $TCL_SVN
 nnoremap <leader>v :vsplit
 nnoremap <leader>t :Tab /
+nnoremap <leader>j Lzz
+nnoremap <leader>k Hzz
+nnoremap <leader>m Mzz
 nnoremap <leader>i :call Inst("
 noremap! Q q
 inoremap jj <ESC>
