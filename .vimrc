@@ -5,6 +5,8 @@ set tabstop=8 softtabstop=0 expandtab shiftwidth=3 smarttab
 :set foldmethod=marker
 
 au BufNewFile *.vhd 0r ~/.vim/template.vhd | let IndentStyle = "vhd"
+"find the last signal and mark it with 's'
+au BufNewFile,BufRead *.vhd :normal G?signalmsgg
 
 :color desert
 
@@ -88,12 +90,61 @@ nnoremap <leader>v :vsplit
 nnoremap <leader>t :Tab /
 nnoremap <leader>j Lzz
 nnoremap <leader>k Hzz
-nnoremap <leader>m Mzz
-nnoremap <leader>i :call Inst("
-noremap! Q q
+nnoremap <leader>i i_<esc>r
+"m doesnt work
+nnoremap <leader>m @ 
+nnoremap <leader>I :call Inst("
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+"noremap! Q q
 inoremap jj <ESC>
+inoremap <esc> <nop>
 noremap <UP> <NOP>
 noremap <DOWN> <NOP>
 noremap <RIGHT> <NOP>
 noremap <LEFT> <NOP>
+
+"Macros
+"set the last signal as marker 's'
+let @i = "G?signalms<c-o>"
+"make word under cursor a signal
+let @s = "yiw'sosignal jjpa : std_logicjjms"
+
+
+"Functions
+nnoremap <leader>p :set operatorfunc=<SID>Grepperator<cr>g@
+vnoremap <leader>p :<c-u>call <SID>Grepperator(visualmode())<cr>
+
+function! s:Grepperator(type)
+   let saved_unnamed_register = @@
+
+   if a:type ==# 'v'
+      normal! `<v`>"ay?entityw"byiw
+      echom @b
+   elseif a:type ==# 'char'
+      normal! `<v`>"ay?entityw"byiw
+      echom @b
+   else
+      return
+   endif
+
+   :call UnixFind('*.vhd')
+   :call UnixGrep(@b, '.')
+   "silent execute "grep! -R " . shellescape(@b) . " ."
+   "silent execute "grep! -R @b  .<cr>"
+   "copen
+
+   let @@ = saved_unnamed_register
+endfunction
+
+function! UnixGrep(string, dir)
+   silent execute "grep! -R " . shellescape(a:string) . " " . a:dir
+"   silent execute "grep! -R " . shellescape(a:string) . " ."
+   copen
+endfunction
+
+function! UnixFind(string)
+   silent execute "find! -R . " . shellescape(a:string) . " -print"
+endfunction
+
 
