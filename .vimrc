@@ -112,39 +112,57 @@ let @s = "yiw'sosignal jjpa : std_logicjjms"
 
 
 "Functions
-nnoremap <leader>p :set operatorfunc=<SID>Grepperator<cr>g@
-vnoremap <leader>p :<c-u>call <SID>Grepperator(visualmode())<cr>
+nnoremap <leader>g :set operatorfunc=<SID>Grepperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>Grepperator(visualmode())<cr>
 
 function! s:Grepperator(type)
    let saved_unnamed_register = @@
 
    if a:type ==# 'v'
-      normal! `<v`>"ay?entityw"byiw
-      echom @b
+      normal! `<v`>y
    elseif a:type ==# 'char'
-      normal! `<v`>"ay?entityw"byiw
-      echom @b
+      normal! `<v`>y
    else
       return
    endif
 
-   :call UnixFind('*.vhd')
-   :call UnixGrep(@b, '.')
-   "silent execute "grep! -R " . shellescape(@b) . " ."
-   "silent execute "grep! -R @b  .<cr>"
-   "copen
+   :call UnixGrep(@@, '.')
+   copen
+
+   let @@ = saved_unnamed_register
+endfunction
+
+nnoremap <leader>p :set operatorfunc=<SID>PortmapUpdate<cr>g@
+vnoremap <leader>p :<c-u>call <SID>PortmapUpdate(visualmode())<cr>
+
+function! s:PortmapUpdate(type)
+   let saved_unnamed_register = @@
+
+   if a:type ==# 'v'
+      normal! `<v`>"ay?entityw"byiw
+   elseif a:type ==# 'char'
+      normal! `<v`>"ay?entityw"byiw
+   else
+      return
+   endif
+
+   :call UnixGrep(@b, './*.vhd')
+   let myList = getqflist()
+   let FileName = @%
+   call filter(myList, 'bufname(v:val.bufnr) !~ FileName')
+   call setqflist(myList)
+   copen
 
    let @@ = saved_unnamed_register
 endfunction
 
 function! UnixGrep(string, dir)
    silent execute "grep! -R " . shellescape(a:string) . " " . a:dir
-"   silent execute "grep! -R " . shellescape(a:string) . " ."
-   copen
+"   copen
 endfunction
 
 function! UnixFind(string)
-   silent execute "find! -R . " . shellescape(a:string) . " -print"
+   :args `find . -type f -iname "*.vhd"`
 endfunction
 
 
