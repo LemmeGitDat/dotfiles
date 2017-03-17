@@ -5,6 +5,7 @@ set tabstop=8 softtabstop=0 expandtab shiftwidth=3 smarttab
 :set foldmethod=marker
 
 au BufNewFile *.vhd 0r ~/.vim/template.vhd | let IndentStyle = "vhd"
+au BufNewFile *_tb.vhd 0r ~/.vim/tb_template.vhd | let IndentStyle = "vhd"
 "find the last signal and mark it with 's'
 au BufNewFile,BufRead *.vhd :normal G?signalmsgg
 
@@ -15,6 +16,8 @@ iab sl std_logic
 iab sig signal
 iab var variable
 
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = ['YouCompleteMe']
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
@@ -109,7 +112,10 @@ noremap <LEFT> <NOP>
 let @i = "G?signalms<c-o>"
 "make word under cursor a signal
 let @s = "yiw'sosignal jjpa : std_logicjjms"
-
+"create port map mapping
+let @p = "0/entitywyiw0pa: jj0/entitywiwork.jjweld$/portea mapjj"
+let @l = '/:byiwf:c2w=> jj"0pa, --jj'
+let @o = 'mm"zyiwf-wy$''sosignal jj"zpa : jjpms`m'
 
 "Functions
 nnoremap <leader>g :set operatorfunc=<SID>Grepperator<cr>g@
