@@ -74,15 +74,15 @@ function! Inst_sigs(path)
 endfunction 
 
 "Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_vhdl_checkers = ['ghdl']
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_vhdl_checkers = ['ghdl']
 " End syntastic settings
 
 :set rnu
@@ -95,7 +95,6 @@ nnoremap <leader>j Lzz
 nnoremap <leader>k Hzz
 nnoremap <leader>i i_<esc>r
 "m doesnt work
-nnoremap <leader>m @ 
 nnoremap <leader>I :call Inst("
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -118,6 +117,26 @@ let @l = '/:byiwf:c2w=> jj"0pa, --jj'
 let @o = 'mm"zyiwf-wy$''sosignal jj"zpa : jjpms`m'
 
 "Functions
+nnoremap <leader>m :call Maperator()<cr>
+vnoremap <leader>m :<c-u>call Maperator()<cr>
+
+function! Maperator()
+
+   normal mm
+   silent exe '/end'
+   let endmark = line('.')
+   normal d$
+   silent exe '?:'
+   let lastport = line('.')
+   normal `m
+   normal @p
+   
+   while line('.') < lastport
+      normal @l
+   endwhile
+   
+endfunction
+
 nnoremap <leader>g :set operatorfunc=<SID>Grepperator<cr>g@
 vnoremap <leader>g :<c-u>call <SID>Grepperator(visualmode())<cr>
 
@@ -171,4 +190,24 @@ function! UnixFind(string)
    :args `find . -type f -iname "*.vhd"`
 endfunction
 
+function! Count( word )
+   redir => cnt
+   silent exe '%s/' . a:word . '//gn'
+   redir END
 
+   let res = strpart(cnt, 0, stridx(cnt, " "))
+   return res
+endfunction
+
+function! VisualCount( word )
+   let start = line("'<")
+   let end = line("'>")
+   redir => cnt
+   silent execute start . ',' . end . '%s/' . a:word . '//gn'
+   "silent execute "'<,'>%s/" . a:word . "//gn"
+   "silent exe '%s/' . a:word . '//gn'
+   redir END
+
+   let res = strpart(cnt, 0, stridx(cnt, " "))
+   return res
+endfunction
