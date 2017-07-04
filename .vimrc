@@ -105,23 +105,41 @@ noremap <UP> <NOP>
 noremap <DOWN> <NOP>
 noremap <RIGHT> <NOP>
 noremap <LEFT> <NOP>
-
+"==================================================================
 "Macros
 "set the last signal as marker 's'
 let @i = "G?signalms<c-o>"
 "make word under cursor a signal
 let @s = "yiw'sosignal jjpa : std_logicjjms"
-"create port map mapping
-let @p = "0/entitywyiw0pa: jj0/entitywiwork.jjweld$/portea mapjj"
-let @l = '/:byiwf:c2w=> jj"0pa, --jj'
-let @o = 'mm"zyiwf-wy$''sosignal jj"zpa : jjpms`m'
+"==================================================================
 
+"==================================================================
 "Functions
+"==================================================================
+"=================================================
+" Maperator  - This function modifies an entity block into a port
+"               map instantiation.
+"to use this function, copy and paste the entity that you want to
+"instantiate into the file first. put your cursor in the pasted
+"entity section and press <leader>m 
+" Maperator Macros
+let @p = "0fnwyiw0Pa: jj0/entitywiwork.jjweld$/portea mapjj"
+let @l = '/:byiwf:c2w=> jj"0pa, --jj'
+" Macro takes the word under the cursor and makes it a signal
+" and then returns to location.  Use this after the maperator()
+" function.
+let @o = 'mm"zyiwf-wy$''sosignal jj"zpa : jjpms`m'
+"
 nnoremap <leader>m :call Maperator()<cr>
 vnoremap <leader>m :<c-u>call Maperator()<cr>
 
 function! Maperator()
 
+   " Move to end of line (this solves corner case of cursor at '0')
+   silent exe '$'
+   "Find the most previous 'entity'
+   silent exe '?entity'
+   " mark with M
    normal mm
    silent exe '/end'
    let endmark = line('.')
@@ -136,6 +154,7 @@ function! Maperator()
    endwhile
    
 endfunction
+"=================================================
 
 nnoremap <leader>g :set operatorfunc=<SID>Grepperator<cr>g@
 vnoremap <leader>g :<c-u>call <SID>Grepperator(visualmode())<cr>
