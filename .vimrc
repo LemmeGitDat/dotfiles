@@ -98,6 +98,7 @@ nnoremap <leader>i i_<esc>r
 nnoremap <leader>I :call Inst("
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>n :NERDTree<cr>
 "noremap! Q q
 inoremap jj <ESC>
 inoremap <esc> <nop>
