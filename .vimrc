@@ -1,13 +1,15 @@
 :filetype indent on
 
 set tabstop=8 softtabstop=0 expandtab shiftwidth=3 smarttab
+syntax on
 
 :set foldmethod=marker
 
 au BufNewFile *.vhd 0r ~/.vim/template.vhd | let IndentStyle = "vhd"
 au BufNewFile *_tb.vhd 0r ~/.vim/tb_template.vhd | let IndentStyle = "vhd"
 "find the last signal and mark it with 's'
-au BufNewFile,BufRead *.vhd :normal G?signalmsgg
+au BufNewFile,BufRead *.vhd :normal G?signal
+msgg
 
 :color desert
 
@@ -17,10 +19,14 @@ iab sig signal
 iab var variable
 
 " To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = ['YouCompleteMe']
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
+"let g:pathogen_disabled = ['YouCompleteMe']
+"execute pathogen#infect()
+"syntax on
+"filetype plugin indent on
+
+"Plugins
+set runtimepath^=~/.vim/bundle/tabular/
+set runtimepath^=~/.vim/bundle/nerdtree/
 
 "set colorcolumn=110                                                                                           
 "highlight ColorColumn ctermbg=darkgray
@@ -109,7 +115,8 @@ noremap <LEFT> <NOP>
 "==================================================================
 "Macros
 "set the last signal as marker 's'
-let @i = "G?signalms<c-o>"
+let @i = "G?signal
+ms<c-o>"
 "make word under cursor a signal
 let @s = "yiw'sosignal jjpa : std_logicjjms"
 "==================================================================
@@ -124,8 +131,11 @@ let @s = "yiw'sosignal jjpa : std_logicjjms"
 "instantiate into the file first. put your cursor in the pasted
 "entity section and press <leader>m 
 " Maperator Macros
-let @p = "0fnwyiw0Pa: jj0/entitywiwork.jjweld$/portea mapjj"
-let @l = '/:byiwf:c2w=> jj"0pa, --jj'
+let @p = "0fnwyiw0Pa: jj0/entity
+wiwork.jjweld$/port
+ea mapjj"
+let @l = '/:
+byiwf:c2w=> jj"0pa, --jj'
 " Macro takes the word under the cursor and makes it a signal
 " and then returns to location.  Use this after the maperator()
 " function.
@@ -184,9 +194,11 @@ function! s:PortmapUpdate(type)
    let saved_unnamed_register = @@
 
    if a:type ==# 'v'
-      normal! `<v`>"ay?entityw"byiw
+      normal! `<v`>"ay?entity
+w"byiw
    elseif a:type ==# 'char'
-      normal! `<v`>"ay?entityw"byiw
+      normal! `<v`>"ay?entity
+w"byiw
    else
       return
    endif
