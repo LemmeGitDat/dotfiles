@@ -131,6 +131,8 @@ let @s = "yiw'sosignal jjpa : std_logicjjms"
 "instantiate into the file first. put your cursor in the pasted
 "entity section and press <leader>m 
 " Maperator Macros
+" NOTE - to add carriage returns (^M) do ctrl-v + ctrl-m
+"     This needs to be fixed in the following macros!!!
 let @p = "0fnwyiw0Pa: jj0/entity
 wiwork.jjwd$/port
 ea mapjj"
