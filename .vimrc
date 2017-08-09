@@ -132,14 +132,18 @@ let @s = "yiw'sosignal jjpa : std_logicjjms"
 "entity section and press <leader>m 
 " Maperator Macros
 let @p = "0fnwyiw0Pa: jj0/entity
-wiwork.jjweld$/port
+wiwork.jjwd$/port
 ea mapjj"
 let @l = '/:
 byiwf:c2w=> jj"0pa, --jj'
 " Macro takes the word under the cursor and makes it a signal
 " and then returns to location.  Use this after the maperator()
 " function.
-let @o = 'mm"zyiwf-wy$''sosignal jj"zpa : jjpms`m'
+let @o = 'eby$mm?architecture
+/begin
+?signal
+ojjkp0i signal jjf,r i :jjf-xxjj`m/>
+w'
 "
 nnoremap <leader>m :call Maperator()<cr>
 vnoremap <leader>m :<c-u>call Maperator()<cr>
